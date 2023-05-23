@@ -20,6 +20,14 @@ earth.horizon = '-18'
 
 After which, one calculates the next setting and the next rising as usual.
 
-### Note
+## Usage and notes
+
+To use the little tool, the best is to have a python environment set up with `pandas`, `ephem` and `tkinter` installed (all three can be installed using `pip`), then simply download the `.py`script and run locally:
+
+```bash
+python twilight_calculator.py
+```
+
+The GUI will pop up on the screen and you'll be able to enter the date (in format `YYYY-MM-DD`) and the location at which you wanna calculate the end of twilight (in format `lon/lat` - note the slash `/`, _e.g._ you need to enter 56.511/7.102 - decimal precision is arbitrary). I did not put any effort into parsing the input, but if you stick to the described format you will have no problem. Click on the `Calculate night!` button, and _voilà_!
 
 Feel free to borrow from my code if you need - I myself have been scavenging the internet to write this. For any questions you can open an issue here on Github.

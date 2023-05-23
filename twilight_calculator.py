@@ -59,7 +59,7 @@ location_label.grid(row=0, column=0, sticky="w")
 # create button to calculate
 button = tk.Button(
     master=window,
-    text="Calculate astronomical twilight!",
+    text="Calculate night!",
     command=calculate_twilights,
     font=('Calibri',25)
 )
