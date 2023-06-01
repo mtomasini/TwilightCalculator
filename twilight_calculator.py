@@ -19,7 +19,6 @@ def calculate_twilights(type_of_twilight):
     sun = ephem.Sun()
     sun.compute()
     
-    
     if type_of_twilight == "sunset":
         earth.horizon = "0"
     elif type_of_twilight == "civil":
