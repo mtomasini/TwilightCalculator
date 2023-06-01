@@ -2,7 +2,8 @@ import pandas as pd
 import ephem
 import tkinter as tk
 
-def calculate_twilights():
+def calculate_twilights(type_of_twilight):
+    
     entered_position = enter_location.get()
     string_position = entered_position.split('/')
     position = [float(x) for x in string_position]
@@ -18,7 +19,15 @@ def calculate_twilights():
     sun = ephem.Sun()
     sun.compute()
     
-    earth.horizon = "-18"
+    
+    if type_of_twilight == "sunset":
+        earth.horizon = "0"
+    elif type_of_twilight == "civil":
+        earth.horizon = "-6"
+    elif type_of_twilight == "nautical":
+        earth.horizon = "-12"
+    elif type_of_twilight == "astronomical":
+        earth.horizon = "-18"
 
     # ephem throws an "AlwaysUpError" when there is no astronomical twilight (which occurs in Summer in nordic countries)
     try:
@@ -36,7 +45,7 @@ def calculate_twilights():
 
 # create window and resize it
 window = tk.Tk()
-window.title("Astronomical twilight calculator")
+window.title("Twilight calculator")
 window.resizable(width = True, height = False)
 window.geometry("1200x500")
 
@@ -56,27 +65,41 @@ date_label.grid(row=0, column=0, sticky="w")
 enter_location.grid(row=0, column=1, sticky="e")
 location_label.grid(row=0, column=0, sticky="w")
 
+# create option menu to pick type of twilight:
+twilight = tk.StringVar(window)
+twilight.set("sunset")
+menu = tk.OptionMenu(
+    window, 
+    twilight, 
+    "sunset", "civil", "nautical", "astronomical"
+)
+menu.config(font=('Calibri', 25))
+
+dropdown = window.nametowidget(menu.menuname)  # Get menu widget.
+dropdown.config(font=('Calibri', 20))  # Set the dropdown menu's font
+
 # create button to calculate
 button = tk.Button(
     master=window,
-    text="Calculate night!",
-    command=calculate_twilights,
+    text="Calculate!",
+    command=lambda: calculate_twilights(twilight.get()),
     font=('Calibri',25)
 )
 
 # create results labels for evening start and morning end of night
-evening_label = tk.Label(master=window, text="Full dark night starts at: ", font=('Calibri',25))
-morning_label = tk.Label(master=window, text="Full dark night ends at: ", font=('Calibri',25))
+evening_label = tk.Label(master=window, text="Chosen twilight ends at: ", font=('Calibri',25))
+morning_label = tk.Label(master=window, text="Chosen twilight starts at: ", font=('Calibri',25))
 evening = tk.Label(master=window, text="", font=('Calibri',25))
 morning = tk.Label(master=window, text="", font=('Calibri',25))
 
 # position all labels on window (operating on object tk.Tk())
 date_entry.grid(row=0, column=0, padx=10)
 location_entry.grid(row=1, column=0, padx=10)
-button.grid(row=2, column=0, pady=10)
-evening_label.grid(row=3, column=0, sticky="w")
-evening.grid(row=3, column=1, padx=10)
-morning_label.grid(row=4, column=0, sticky="w")
-morning.grid(row=4, column=1, padx=10)
+menu.grid(row=2, column=0, padx=10, sticky="w")
+button.grid(row=3, column=0, pady=10)
+evening_label.grid(row=4, column=0, sticky="w")
+evening.grid(row=4, column=1, padx=10)
+morning_label.grid(row=5, column=0, sticky="w")
+morning.grid(row=5, column=1, padx=10)
 
 window.mainloop()
